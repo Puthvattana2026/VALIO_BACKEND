@@ -1,0 +1,12 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: calentra_admin_service
+
+  profiles:
+    active: dev
+
+  config:
+    import: "classpath:env.yaml"

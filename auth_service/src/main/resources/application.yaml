@@ -1,0 +1,12 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: calentra_auth_service
+
+  profiles:
+    active: dev
+
+  config:
+    import: "classpath:env.yaml"
