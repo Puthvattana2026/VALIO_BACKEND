@@ -5,10 +5,14 @@ spring:
   application:
     name: configserver
 
+  profiles:
+    active: git
+
   cloud:
     config:
       server:
         git:
-          uri:
+          uri: https://github.com/Puthvattana2026/VALIO_BACKEND.git
           clone-on-start: true
           default-label: main
+          search-paths: configserver/src/main/resources/configs
