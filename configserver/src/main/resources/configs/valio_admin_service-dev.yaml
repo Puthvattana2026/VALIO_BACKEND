@@ -27,3 +27,22 @@ minio:
   endpoint: ${MINIO_ENDPOINT}
   access-key: ${MINIO_ACESSKEY}
   secret-key: ${MINIO_SECRETKEY}
+  
+eureka:
+  instance:
+    preferIpAddress: true
+      
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+    defaultZone: http://localhost:8083/eureka/  
+          
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    shutdown:
+      enabled: true 

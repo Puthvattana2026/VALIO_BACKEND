@@ -4,5 +4,9 @@ server:
 spring:
   application:
     name: valio_eurekaserver
+
+  profiles:
+    active: dev
+
   config:
     import: configserver:http://localhost:8084
