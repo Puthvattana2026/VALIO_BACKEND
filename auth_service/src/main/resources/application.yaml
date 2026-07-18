@@ -9,4 +9,6 @@ spring:
     active: dev
 
   config:
-    import: "classpath:env.yaml"
+    import:
+      - configserver:http://localhost:8084
+      - optional:classpath:env.yaml
