@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: configserver
+    name: valio_configserver
 
   profiles:
     active: git

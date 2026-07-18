@@ -3,10 +3,12 @@ server:
 
 spring:
   application:
-    name: calentra_admin_service
+    name: valio_admin_service
 
   profiles:
     active: dev
 
   config:
-    import: "classpath:env.yaml"
+    import: 
+      - configserver:http://localhost:8084
+      - classpath:env.yaml

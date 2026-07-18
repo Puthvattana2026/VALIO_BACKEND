@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: calentra_auth_service
+    name: valio_auth_service
 
   profiles:
     active: dev
