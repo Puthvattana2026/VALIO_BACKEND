@@ -35,9 +35,7 @@ public class PermissionServiceImpl implements PermissionService {
 	@Transactional
 	@Override
 	public Permission update(UUID id, PermissionRequestDTO request) {
-		Permission permission = permissionRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException());
-
+		Permission permission = permissionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException());
 		permission.setName(request.name());
 		permission.setDescription(request.description());
 		return permissionRepository.save(permission);
@@ -46,12 +44,8 @@ public class PermissionServiceImpl implements PermissionService {
 	@Transactional
 	@Override
 	public void delete(UUID id) {
-		if (!permissionRepository.existsById(id)) {
-			throw new DuplicatePermissionException();
-		}
-		if (permissionRepository.isAttachedToAnyRole(id)) {
-			throw new ResourceNotFoundException();
-		}
+		if (!permissionRepository.existsById(id)){throw new DuplicatePermissionException();}
+		if (permissionRepository.isAttachedToAnyRole(id)){throw new ResourceNotFoundException();}
 		permissionRepository.deleteById(id);
 	}
 

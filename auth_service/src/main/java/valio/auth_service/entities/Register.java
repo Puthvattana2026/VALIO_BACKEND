@@ -29,8 +29,8 @@ import valio.auth_service.enums.OAuth2Providers;
 @AllArgsConstructor
 public class Register extends JpaAuditor {
 
-    @Id // primary key
-    @GeneratedValue(strategy = GenerationType.UUID) // aaaa-bbbb-cccc-dddd, 1, 2, 3, 4
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(unique = true, nullable = false)

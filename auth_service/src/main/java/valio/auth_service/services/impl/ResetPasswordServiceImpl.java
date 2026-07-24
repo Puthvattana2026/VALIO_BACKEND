@@ -29,18 +29,13 @@ public class ResetPasswordServiceImpl implements ResetPasswordService{
 	@Transactional
 	@Override
 	public void sendCode(String email) {
-		
 		Optional<Register> register = registerRepository.findByEmail(email);
-		
 		if(register.isEmpty()) {
 			return;
 		}
-		
 		Register registerEmail = register.get();
-		
 		String code = DigitsGenerator.digitsGenerator();
 		String hashCode = passwordEncoder.encode(code);
-		
 		ResetPassword reset = new ResetPassword();
 		reset.setCode(code);
 		reset.setHashCode(hashCode);
@@ -53,55 +48,42 @@ public class ResetPasswordServiceImpl implements ResetPasswordService{
 
 	@Override
 	public Boolean resendCode(String email) {
-		
 		Optional<Register> register = registerRepository.findByEmail(email);
-		
 		if(register.isEmpty()) {
 			return false;
 		}
-		
 		Register registerEmail = register.get();
-		
 		Optional<ResetPassword> resetPassword = passwordRepository.findTopByRegisterAndTokenIsFalse(registerEmail);
-		
 		if(resetPassword.isPresent()) {
 			ResetPassword existingToken = resetPassword.get();
-			
 			if(existingToken.getExpiredAt() != null && existingToken.getExpiredAt().isAfter(LocalDateTime.now())) {
 				System.out.println("Verify Code is still valid. Cannot resend yet.");
                 return false; 
 			}
 		}
-		
 		String newCode = DigitsGenerator.digitsGenerator();
 		String newHashCode = passwordEncoder.encode(newCode);
-		
 		ResetPassword newReset = new ResetPassword();
 		newReset.setCode(newCode);
 		newReset.setHashCode(newHashCode);
 		newReset.setRegister(registerEmail);
 		newReset.setExpiredAt(LocalDateTime.now().plusMinutes(2));
 		newReset.setToken(false);
-		
 		passwordRepository.save(newReset);
 		digitsSender.sendDigits(registerEmail.getEmail(), newHashCode);
-		
 		return true;
 	}
 
 	@Override
 	public void resetPassword(String email, String code, String password) {
-		
 		Register register = registerRepository.findByEmail(email).orElseThrow(ResourceNotFoundException::new);
 		ResetPassword token = passwordRepository.findTopByRegisterAndTokenIsFalse(register).orElseThrow(ResourceNotFoundException::new);
 		if(token.getExpiredAt().isBefore(LocalDateTime.now())) throw new RuntimeException("Verify Code Expired");
 		if(!passwordEncoder.matches(code, token.getHashCode())) throw new RuntimeException("Invalid Code");
-		
 		token.setToken(true);
 		passwordRepository.save(token);
 		register.setPassword(passwordEncoder.encode(password));
-		registerRepository.save(register);
-		
+		registerRepository.save(register);	
 	}
 
 }

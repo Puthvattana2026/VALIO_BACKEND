@@ -38,20 +38,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public RefreshToken refreshToken(String requestToken) {
-
-        RefreshToken token = refreshTokenRepository.findByRefreshToken(requestToken)
-                .orElseThrow(InvalidRefreshTokenException::new);
-
+        RefreshToken token = refreshTokenRepository.findByRefreshToken(requestToken).orElseThrow(InvalidRefreshTokenException::new);
         if (isTokenExpired(token)) {
             refreshTokenRepository.delete(token);
             throw new InvalidRefreshTokenException();
         }
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String getSubject = authentication.getName();
-
         accessTokenProvider.generateAccessToken(getSubject, authentication.getAuthorities());
-
         return token;
     }
 }
