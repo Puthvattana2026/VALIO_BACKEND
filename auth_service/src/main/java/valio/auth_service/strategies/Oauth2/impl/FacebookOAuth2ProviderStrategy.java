@@ -23,7 +23,7 @@ public class FacebookOAuth2ProviderStrategy implements Oauth2ProvidersStrategy{
                 (String) attributes.get("email"),
                 (String) attributes.get("name"),
                 extractPictureUrl(attributes),
-                false
+                true
         );
 	}
 	

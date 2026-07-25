@@ -12,21 +12,15 @@ import valio.auth_service.strategies.Oauth2.Oauth2ProvidersStrategy;
 
 @Component
 public class Oauth2ProviderStrategyFactory {
-
 	private final Map<OAuth2Providers, Oauth2ProvidersStrategy> factories;
 	
 	public Oauth2ProviderStrategyFactory(List<Oauth2ProvidersStrategy> StrategyList) {
-		this.factories = StrategyList.stream()
-				.collect(Collectors.toMap(Oauth2ProvidersStrategy::provider, Function.identity()));
+		this.factories = StrategyList.stream().collect(Collectors.toMap(Oauth2ProvidersStrategy::provider, Function.identity()));
 	}
 	
 	public Oauth2ProvidersStrategy getStrategies(OAuth2Providers type) {
 		Oauth2ProvidersStrategy strategy = factories.get(type);
-		
-		if(strategy == null) {
-			throw new IllegalArgumentException("Unsupported OAuth2 provider: " + type);
-		}
-		
+		if(strategy == null) {throw new IllegalArgumentException("Unsupported OAuth2 provider: " + type);}
 		return strategy;
 	}
 }

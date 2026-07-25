@@ -28,7 +28,7 @@ public class GitHubOauth2ProvidersStrategy implements Oauth2ProvidersStrategy{
 				(String) attributes.get("email"), 
 				name,
 				(String) attributes.get("avatar_url"), 
-				false
+				true
 			);
 	}
 }
