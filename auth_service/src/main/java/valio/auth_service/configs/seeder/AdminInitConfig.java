@@ -86,7 +86,7 @@ public class AdminInitConfig {
         Register admin = Register.builder()
                 .email(adminEmail)
                 .username(getUsername)
-                .password(passwordEncoder.encode("ChangeMe123!"))
+                .password(passwordEncoder.encode("vattanaputh"))
                 .roles(new HashSet<>(Set.of(adminRole)))
                 .emailVerified(true)
                 .isAccountNonExpired(true)

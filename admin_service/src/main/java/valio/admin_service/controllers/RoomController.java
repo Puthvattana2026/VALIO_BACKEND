@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -55,24 +56,28 @@ public class RoomController {
    |=================
 	*/
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<RoomResponse> addRoom(@RequestPart("room") Room request, @RequestPart("image") MultipartFile image){
 		Room addedRoom = roomService.addRoom(request, image);
 		return ResponseEntity.status(HttpStatus.CREATED).body(roomMapper.toRoomResponse(addedRoom));
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping(value = "/{roomId}/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<RoomResponse> updateRoom(@PathVariable("roomId")UUID id, @RequestPart("room") Room request, @RequestPart("image") MultipartFile image){
 		Room updateRoom = roomService.updateRoom(id, request, image);
 		return ResponseEntity.status(HttpStatus.CREATED).body(roomMapper.toRoomResponse(updateRoom));
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PatchMapping("/{id}/visibility")
 	public ResponseEntity<Room> updateVisibility(@PathVariable UUID id, @RequestParam Boolean visible) {
 		roomService.updateVisibility(id, visible);
 		return ResponseEntity.noContent().build();
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{roomId}")
 	public ResponseEntity<Void> deleteRoom(@PathVariable("roomId")UUID id){
 		roomService.deleteRoom(id);
