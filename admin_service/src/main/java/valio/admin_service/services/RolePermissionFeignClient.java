@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import valio.admin_service.configs.FeignClientConfig;
 import valio.admin_service.dtos.request.PermissionRequestDTO;
 import valio.admin_service.dtos.request.RoleRequestDTO;
 import valio.admin_service.dtos.response.PermissionResponseDTO;
 import valio.admin_service.dtos.response.RoleResponseDTO;
 
-@FeignClient(name = "valio-auth-service", path = "/admin", configuration = FeignClientConfig.class)
+@FeignClient(name = "valio-auth-service", path = "/admin")
 public interface RolePermissionFeignClient {
 	
 	/* 
