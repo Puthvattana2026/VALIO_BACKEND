@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: valio_admin_service
+    name: valio-admin-service
 
   profiles:
     active: dev

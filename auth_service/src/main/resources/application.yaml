@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: valio_auth_service
+    name: valio-auth-service
 
   profiles:
     active: dev

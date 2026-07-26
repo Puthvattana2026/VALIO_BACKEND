@@ -18,7 +18,7 @@ import valio.admin_service.dtos.request.RoleRequestDTO;
 import valio.admin_service.dtos.response.PermissionResponseDTO;
 import valio.admin_service.dtos.response.RoleResponseDTO;
 
-@FeignClient(name = "valio-auth-service", path = "/admin", configuration = FeignClientConfig.class)
+@FeignClient(name = "valio_auth_service", path = "/admin", configuration = FeignClientConfig.class)
 public interface RolePermissionFeignClient {
 	
 	/* 
