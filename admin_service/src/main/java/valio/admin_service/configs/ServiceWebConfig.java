@@ -36,7 +36,6 @@ public class ServiceWebConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(rq -> rq
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/admin/rooms", "/admin/rooms/{id}").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtVerifyFilter(), UsernamePasswordAuthenticationFilter.class)

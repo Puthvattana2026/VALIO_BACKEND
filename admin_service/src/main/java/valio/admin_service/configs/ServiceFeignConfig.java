@@ -2,33 +2,21 @@ package valio.admin_service.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import feign.RequestInterceptor;
-import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import valio.admin_service.utils.ServiceTokenProvider;
 
 @Configuration
-public class FeignConfig {
+@RequiredArgsConstructor
+public class ServiceFeignConfig {
+
+    private final ServiceTokenProvider serviceTokenProvider;
 
     @Bean
-    public RequestInterceptor requestInterceptor() {
-
-        return template -> {
-
-            ServletRequestAttributes attributes =
-                    (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-
-            if (attributes == null)
-                return;
-
-            HttpServletRequest request = attributes.getRequest();
-
-            String token = request.getHeader("Authorization");
-
-            if (token != null) {
-                template.header("Authorization", token);
-            }
-        };
+    public RequestInterceptor serviceAuthInterceptor() {
+        return template -> template.header(
+            "Authorization", "Bearer " + serviceTokenProvider.getToken()
+        );
     }
 }
