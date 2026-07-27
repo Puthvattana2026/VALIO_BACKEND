@@ -11,15 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import jakarta.servlet.http.HttpServletResponse;
-import valio.admin_service.filters.CsrfCookieFilter;
 import valio.admin_service.filters.JwtVerifyFilter;
 
 @Configuration
@@ -31,15 +27,13 @@ public class ServiceWebConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository())
-      				  .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(rq -> rq
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**", "/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/admin/rooms", "/admin/rooms/{id}").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtVerifyFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -66,24 +60,6 @@ public class ServiceWebConfig {
                 .build();
     }
     
-    @Bean
-    public CookieCsrfTokenRepository csrfTokenRepository() {
-        CookieCsrfTokenRepository repository = new CookieCsrfTokenRepository();
-
-        repository.setCookieName("XSRF-TOKEN");
-        repository.setHeaderName("X-XSRF-TOKEN");
-        repository.setCookiePath("/");
-
-        repository.setCookieCustomizer(cookie -> cookie
-            .httpOnly(false)
-            .secure(false)
-            .sameSite("Lax")
-            .path("/")
-        );
-
-        return repository;
-    }
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();

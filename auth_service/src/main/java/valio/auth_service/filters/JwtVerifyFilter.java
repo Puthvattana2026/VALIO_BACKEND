@@ -50,7 +50,7 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
         if (accessToken == null) {
             accessToken = tokenExtractor.extract(request);
         }
-
+        
         if (accessToken == null) {
             filterChain.doFilter(request, response);
             return;
@@ -71,7 +71,7 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
 
-        Authentication getAuthentication = new UsernamePasswordAuthenticationToken(username, null, grantedAuthorities);
+        Authentication getAuthentication = new UsernamePasswordAuthenticationToken(username, accessToken, grantedAuthorities);
         SecurityContextHolder.getContext().setAuthentication(getAuthentication);
         filterChain.doFilter(request, response);
     }

@@ -21,16 +21,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import valio.auth_service.filters.CsrfCookieFilter;
 import valio.auth_service.filters.JwtLoginFilter;
 import valio.auth_service.filters.JwtVerifyFilter;
 import valio.auth_service.repositories.RegisterRepository;
@@ -62,8 +58,9 @@ public class WebConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(cors -> cors.configurationSource(corConfigurationSource()))
-                .csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository())
-                				  .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
+//                .csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository())
+//                				  .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(getAuthenticationProvider())
                 .authorizeHttpRequests(rq -> rq
@@ -74,7 +71,7 @@ public class WebConfig {
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtVerifyFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(jwtLoginFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+//                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(OAuth2LoginSuccessHandlerServiceImpl)
                         .failureHandler((request, response, exception) -> {
@@ -142,23 +139,23 @@ public class WebConfig {
         return new JwtVerifyFilter(tokenExtractor);
     }
     
-    @Bean
-    public CookieCsrfTokenRepository csrfTokenRepository() {
-        CookieCsrfTokenRepository repository = new CookieCsrfTokenRepository();
-
-        repository.setCookieName("XSRF-TOKEN");
-        repository.setHeaderName("X-XSRF-TOKEN");
-        repository.setCookiePath("/");
-
-        repository.setCookieCustomizer(cookie -> cookie
-            .httpOnly(false)
-            .secure(false)
-            .sameSite("Lax")
-            .path("/")
-        );
-
-        return repository;
-    }
+//    @Bean
+//    public CookieCsrfTokenRepository csrfTokenRepository() {
+//        CookieCsrfTokenRepository repository = new CookieCsrfTokenRepository();
+//
+//        repository.setCookieName("XSRF-TOKEN");
+//        repository.setHeaderName("X-XSRF-TOKEN");
+//        repository.setCookiePath("/");
+//
+//        repository.setCookieCustomizer(cookie -> cookie
+//            .httpOnly(false)
+//            .secure(false)
+//            .sameSite("Lax")
+//            .path("/")
+//        );
+//
+//        return repository;
+//    }
 
     @Bean
     public CorsConfigurationSource corConfigurationSource(){
