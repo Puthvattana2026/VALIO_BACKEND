@@ -31,7 +31,7 @@ import valio.auth_service.services.RoleService;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN') or hasAuthority('SCOPE_INTERNAL_SERVICE')")
+@PreAuthorize("hasRole('ADMIN')")
 public class RolePermissionController {
 	
 	private final RoleService roleService;

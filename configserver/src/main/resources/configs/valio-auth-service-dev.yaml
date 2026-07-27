@@ -70,10 +70,3 @@ management:
   endpoint:
     shutdown:
       enabled: true
-
-service-clients:
-  clients:
-    - client-id: admin-service
-      client-secret: ${ADMIN_SERVICE_SECRET}
-      scopes:
-        - INTERNAL_SERVICE

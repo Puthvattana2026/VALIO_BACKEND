@@ -68,17 +68,4 @@ public class GlobalExceptionHandler {
     	
     	return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
-    
-    @ExceptionHandler(InvalidClientCredentialsException.class)
-    public ResponseEntity<?> duplicatePermissionHandler(InvalidClientCredentialsException e){
-    	Map<String, Object> error = new HashMap<>();
-    	error.put("message", e.getMessage());
-    	error.put("error", "INVALID_CLIENT_CREDENTIALS");
-    	error.put("status", HttpStatus.UNAUTHORIZED.value());
-    	error.put("timestamp", LocalDateTime.now());
-    	
-    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
-
-
 }

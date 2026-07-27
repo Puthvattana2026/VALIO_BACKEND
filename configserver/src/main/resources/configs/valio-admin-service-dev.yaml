@@ -45,10 +45,4 @@ management:
         include: '*'
   endpoint:
     shutdown:
-      enabled: true 
-    env:
-      show-values: ALWAYS
-
-service:
-  client-id: admin-service
-  client-secret: ${ADMIN_SERVICE_SECRET}
+      enabled: true
