@@ -13,7 +13,7 @@ import valio.admin_service.dtos.response.TokenResponseDTO;
 @Component
 public class ServiceTokenProvider {
 
-    private final RestClient restClient = RestClient.create();
+    private final RestClient restClient;
     private volatile String cachedToken;
     private volatile Instant expiresAt = Instant.EPOCH;
 
@@ -21,6 +21,10 @@ public class ServiceTokenProvider {
     private String clientId;
     @Value("${service.client-secret}")
     private String clientSecret;
+
+    public ServiceTokenProvider(RestClient.Builder loadBalancedRestClientBuilder) {
+        this.restClient = loadBalancedRestClientBuilder.build();
+    }
 
     public synchronized String getToken() {
         if (cachedToken == null || Instant.now().isAfter(expiresAt.minusSeconds(30))) {

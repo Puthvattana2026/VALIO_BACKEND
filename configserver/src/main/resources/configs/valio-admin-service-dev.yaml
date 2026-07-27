@@ -46,6 +46,7 @@ management:
   endpoint:
     shutdown:
       enabled: true 
+
 service:
   client-id: admin-service
   client-secret: ${ADMIN_SERVICE_SECRET}

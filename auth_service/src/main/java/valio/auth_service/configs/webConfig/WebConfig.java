@@ -67,7 +67,7 @@ public class WebConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(getAuthenticationProvider())
                 .authorizeHttpRequests(rq -> rq
-                		.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**", "/oauth2/token").permitAll()
+                		.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**", "/oauth2/token", "/actuator/**").permitAll()
                 		.requestMatchers(HttpMethod.GET, "/auth/csrf").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/logout").access(new WebExpressionAuthorizationManager("isAuthenticated()"))
