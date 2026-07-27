@@ -69,8 +69,8 @@ management:
         include: '*'
   endpoint:
     shutdown:
-      enabled: true 
-	 
+      enabled: true
+
 service-clients:
   clients:
     - client-id: admin-service
