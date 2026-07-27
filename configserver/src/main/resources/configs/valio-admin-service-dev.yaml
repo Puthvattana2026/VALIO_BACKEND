@@ -46,6 +46,8 @@ management:
   endpoint:
     shutdown:
       enabled: true 
+    env:
+      show-values: ALWAYS
 
 service:
   client-id: admin-service
