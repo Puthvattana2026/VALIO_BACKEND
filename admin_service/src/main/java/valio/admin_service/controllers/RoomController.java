@@ -51,9 +51,9 @@ public class RoomController {
 	}
 	
 	/* 
-   |=================
-   | ADMIN Operation
-   |=================
+   |========================
+   | ADMIN Operation & STAFF
+   |========================
 	*/
 	
 	@PreAuthorize("hasRole('ADMIN')")
