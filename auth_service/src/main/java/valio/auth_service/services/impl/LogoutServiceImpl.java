@@ -22,12 +22,8 @@ public class LogoutServiceImpl implements LogoutService {
         if (refreshToken == null || refreshToken.isBlank()) {
             throw new ResourceNotFoundException();
         }
-
-        RefreshToken token = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(InvalidRefreshTokenException::new);
-
+        RefreshToken token = refreshTokenRepository.findByRefreshToken(refreshToken).orElseThrow(InvalidRefreshTokenException::new);
         refreshTokenRepository.delete(token);
-
         return Map.of("message", "Logout successful");
     }
 }

@@ -37,20 +37,15 @@ public class MinioServiceImpl implements MinioService{
     
 	@Override
 	public List<FileMetadata> uploadFiles(List<MultipartFile> files) {
-
 		if (files == null || files.isEmpty()) {
 			throw new IllegalArgumentException("At least one file is required");
 		}
-
 		files.forEach(this::validateFile);
-
 		List<FileMetadata> uploadedFiles = new ArrayList<>(files.size());
-
 		for (MultipartFile file : files) {
 			FileMetadata metadata = uploadValidatedFile(file);
 			uploadedFiles.add(metadata);
 		}
-
 		return uploadedFiles;
 	}
 
@@ -58,7 +53,6 @@ public class MinioServiceImpl implements MinioService{
     public void deleteFile(UUID fileId) {
         FileMetadata metadata = fileMetadataRepository.findById(fileId)
                 .orElseThrow(() -> new IllegalArgumentException("File not found: " + fileId));
-
         try {
             minioClient.removeObject(
                     RemoveObjectArgs.builder()
@@ -82,18 +76,14 @@ public class MinioServiceImpl implements MinioService{
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
-
         String extension = getExtension(file.getOriginalFilename()).toLowerCase().replace(".", "");
         List<String> allowedExtensions = uploadProperties.allowedExtensions();
-
         if (allowedExtensions == null || allowedExtensions.isEmpty()) {
             throw new IllegalStateException("Allowed file extensions are not configured");
         }
-
         if (!allowedExtensions.contains(extension)) {
             throw new IllegalArgumentException("File type ." + extension + " is not allowed. Allowed: " + allowedExtensions);
         }
-
         long maxBytes = uploadProperties.maxSizeMb() * 1024 * 1024;
         if (file.getSize() > maxBytes) {
             throw new IllegalArgumentException("File exceeds max size of " + uploadProperties.maxSizeMb() + "MB");
@@ -106,7 +96,6 @@ public class MinioServiceImpl implements MinioService{
                 				.bucket(bucketName)
                 				.build()
         );
-        
         if (!exists) {
             minioClient.makeBucket(MakeBucketArgs.builder()
             									 .bucket(bucketName)
