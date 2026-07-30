@@ -14,5 +14,5 @@ import valio.admin_service.dtos.response.UsersResponseDTO;
 public interface HouseKeepingFeignClient {
 	
 	@GetMapping
-	public ResponseEntity<List<UsersResponseDTO>> getAllUsersByRole(@RequestParam(required = false) String role);
+	List<UsersResponseDTO> getAllUsersByRole(@RequestParam(required = false) String role);
 }

@@ -21,8 +21,5 @@ public class HousekeepingController {
 	
 	private final HouseKeepingFeignClient houseKeepingFeignClient;
 	
-	@GetMapping
-	public ResponseEntity<List<UsersResponseDTO>> getAllUsersByRole(@RequestParam(required = false) String role){
-		return houseKeepingFeignClient.getAllUsersByRole(role);
-	};
+
 }
