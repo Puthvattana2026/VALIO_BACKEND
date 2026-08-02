@@ -14,14 +14,20 @@ spring:
           format_sql: false
 
   eureka:
+    instance:
+      preferIpAddress: true
+        
     client:
-      registerWithEureka: false
-      fetchRegistry: false
+      registerWithEureka: true
+      fetchRegistry: true
       serviceUrl:
-        defaultZone: http://localhost:8083/eureka/
-
-    management:
-      endpoints:
-        web:
-          exposure:
-            include: '*'
+        defaultZone: http://localhost:8083/eureka/  
+            
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: '*'
+    endpoint:
+      shutdown:
+        enabled: true
