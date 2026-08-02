@@ -9,14 +9,14 @@ import lombok.RequiredArgsConstructor;
 import valio.admin_service.dtos.response.UsersResponseDTO;
 import valio.admin_service.entities.TaskAssign;
 import valio.admin_service.repositories.TaskAssignRepository;
-import valio.admin_service.services.HouseKeepingFeignClient;
+import valio.admin_service.services.GetUserByRoleFeignClient;
 import valio.admin_service.services.TaskAssignService;
 
 @Service
 @RequiredArgsConstructor
 public class TaskAssignServiceImpl implements TaskAssignService{
 	
-	private final HouseKeepingFeignClient houseKeepingFeignClient;
+	private final GetUserByRoleFeignClient getUserByRoleFeignClient;
 	private final TaskAssignRepository assignRepository;
 	private final String HOUSE_KEEPER = "HOUSEKEEPING";
 	
@@ -32,7 +32,7 @@ public class TaskAssignServiceImpl implements TaskAssignService{
 	        throw new IllegalArgumentException("houseKeeperId must not be null.");
 	    }
 	    TaskAssign task = assignRepository.findById(taskId).orElseThrow(() -> new IllegalArgumentException("Task not found."));
-	    List<UsersResponseDTO> users = houseKeepingFeignClient.getAllUsersByRole(HOUSE_KEEPER);
+	    List<UsersResponseDTO> users = getUserByRoleFeignClient.getAllUsersByRole(HOUSE_KEEPER);
 	    boolean isValidHouseKeeper = users.stream().anyMatch(u -> u.id().equals(houseKeeperId));
 	    if (!isValidHouseKeeper) {
 	        throw new IllegalArgumentException("Only HOUSEKEEPING role can be assigned.");
@@ -44,7 +44,7 @@ public class TaskAssignServiceImpl implements TaskAssignService{
 	@Override
 	public TaskAssign cancelTaskTo(UUID taskId, UUID houseKeeperId) {
 	    TaskAssign existing = assignRepository.findById(taskId).orElseThrow(() -> new IllegalArgumentException("Task not found."));
-	    List<UsersResponseDTO> users = houseKeepingFeignClient.getAllUsersByRole(HOUSE_KEEPER);
+	    List<UsersResponseDTO> users = getUserByRoleFeignClient.getAllUsersByRole(HOUSE_KEEPER);
 	    boolean isValidHouseKeeper = users.stream().anyMatch(u -> u.id().equals(houseKeeperId));
 	    if (!isValidHouseKeeper) {
 	        throw new IllegalArgumentException("HOUSEKEEPER NOT FOUND");
