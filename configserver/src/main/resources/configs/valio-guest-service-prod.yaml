@@ -17,11 +17,11 @@ eureka:
   instance:
     preferIpAddress: true
        
-    client:
-      registerWithEureka: true
-      fetchRegistry: true
-      serviceUrl:
-        defaultZone: http://localhost:8083/eureka/  
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka/  
               
 management:
   endpoints:
