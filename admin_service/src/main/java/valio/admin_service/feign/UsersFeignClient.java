@@ -1,4 +1,4 @@
-package valio.admin_service.services;
+package valio.admin_service.feign;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import valio.admin_service.configs.FeignConfig;
 import valio.admin_service.dtos.response.UsersResponseDTO;
 
 @FeignClient(name = "valio-auth-service", contextId = "houseKeepingFeignClient", path = "/internal/users", configuration = FeignConfig.class)
-public interface GetUserByRoleFeignClient {
+public interface UsersFeignClient {
 	
 	@GetMapping
 	List<UsersResponseDTO> getAllUsersByRole(@RequestParam(required = false) String role);

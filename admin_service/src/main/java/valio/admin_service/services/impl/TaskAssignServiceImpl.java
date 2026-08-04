@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import valio.admin_service.dtos.response.UsersResponseDTO;
 import valio.admin_service.entities.TaskAssign;
+import valio.admin_service.feign.UsersFeignClient;
 import valio.admin_service.repositories.TaskAssignRepository;
-import valio.admin_service.services.GetUserByRoleFeignClient;
 import valio.admin_service.services.TaskAssignService;
 
 @Service
 @RequiredArgsConstructor
 public class TaskAssignServiceImpl implements TaskAssignService{
 	
-	private final GetUserByRoleFeignClient getUserByRoleFeignClient;
+	private final UsersFeignClient getUserByRoleFeignClient;
 	private final TaskAssignRepository assignRepository;
 	private final String HOUSE_KEEPER = "HOUSEKEEPING";
 	

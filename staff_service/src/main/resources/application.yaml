@@ -1,0 +1,14 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: valio-staff-service
+
+  profiles:
+    active: dev 
+
+  config:
+    import:
+    - configserver:http://localhost:8084
+    - classpath:env.yaml

@@ -1,4 +1,4 @@
-package valio.admin_service.services;
+package valio.admin_service.feign;
 
 import java.util.List;
 import java.util.UUID;

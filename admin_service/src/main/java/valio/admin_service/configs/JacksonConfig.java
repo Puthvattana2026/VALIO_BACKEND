@@ -10,7 +10,7 @@ import com.fasterxml.jackson.datatype.hibernate7.Hibernate7Module;
 public class JacksonConfig {
 
     @Bean
-    public Hibernate7Module hibernate6Module() {
+    public Hibernate7Module hibernateModule() {
         Hibernate7Module module = new Hibernate7Module();
         module.configure(Hibernate7Module.Feature.FORCE_LAZY_LOADING, false);
         return module;

@@ -22,7 +22,7 @@ public class UsersController {
 	private final UsersService usersServiceImpl;
 	
 	@GetMapping
-	public ResponseEntity<List<UsersResponseDTO>> getAllUsers(@RequestParam(required = false) String role){
-		return ResponseEntity.ok(usersServiceImpl.getAllUsers(role));
+	public ResponseEntity<List<UsersResponseDTO>> UsersFeign(@RequestParam(required = false) String role){
+		return ResponseEntity.ok(usersServiceImpl.usersFeign(role));
 	}
 }

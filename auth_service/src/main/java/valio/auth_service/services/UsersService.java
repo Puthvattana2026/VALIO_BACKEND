@@ -5,5 +5,5 @@ import java.util.List;
 import valio.auth_service.dtos.responses.UsersResponseDTO;
 
 public interface UsersService {
-	List<UsersResponseDTO> getAllUsers(String role);
+	List<UsersResponseDTO> usersFeign(String role);
 }

@@ -21,7 +21,7 @@ public class UsersServiceImpl implements UsersService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<UsersResponseDTO> getAllUsers(String role) {
+	public List<UsersResponseDTO> usersFeign(String role) {
 		 List<Register> users = (role != null) ? registerRepository.findByRoles_Name(role) : registerRepository.findAll();
 	
 	    return users.stream()

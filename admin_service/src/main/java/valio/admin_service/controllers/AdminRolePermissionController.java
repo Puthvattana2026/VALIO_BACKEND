@@ -19,7 +19,7 @@ import valio.admin_service.dtos.request.PermissionRequestDTO;
 import valio.admin_service.dtos.request.RoleRequestDTO;
 import valio.admin_service.dtos.response.PermissionResponseDTO;
 import valio.admin_service.dtos.response.RoleResponseDTO;
-import valio.admin_service.services.RolePermissionFeignClient;
+import valio.admin_service.feign.RolePermissionFeignClient;
 
 @RestController
 @RequestMapping("/admin")
