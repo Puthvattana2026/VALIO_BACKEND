@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tech.sv</groupId>
-	<artifactId>calentra-auth-service</artifactId>
+	<artifactId>auth_service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name />
 	<description />
@@ -159,6 +159,25 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.5.1</version>
+
+				<configuration>
+					<to>
+						<image>
+							vattanaputh/${project.artifactId}:v1
+						</image>
+					</to>
+
+					<container>
+						<ports>
+							<port>8080</port>
+						</ports>
+					</container>
 				</configuration>
 			</plugin>
 			<plugin>

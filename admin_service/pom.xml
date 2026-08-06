@@ -172,6 +172,25 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.5.1</version>
+
+				<configuration>
+					<to>
+						<image>
+							vattanaputh/${project.artifactId}:v1
+						</image>
+					</to>
+
+					<container>
+						<ports>
+							<port>8080</port>
+						</ports>
+					</container>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<executions>

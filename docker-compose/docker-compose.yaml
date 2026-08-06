@@ -1,0 +1,87 @@
+version: "3.8"
+services:
+  configserver:
+    image: vattanaputh/configserver:v1
+    ports: 
+      - "8083:8083"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://configserver:8083/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - valionetwork
+  
+  eurekaserver:
+    image: vattanaputh/eurekaseerver:v1
+    ports: 
+      - "8084:8084"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://eurekaserver:8084/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - valionetwork
+    depends_on:
+      configserver:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
+
+  authservice:
+    image: vattanaputh/auth_service:v1
+    ports: 
+      - "8085:8085"
+    networks:
+      - valionetwork
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+
+  adminservice:
+    image: vattanaputh/admin_service:v1
+    ports: 
+      - "8086:8086"
+    networks:
+      - valionetwork
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      authservice:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+  
+networks:
+  valionetwork:
+    
