@@ -19,12 +19,12 @@ import valio.admin_service.entities.FileMetadata;
 import valio.admin_service.enums.FileCategory;
 import valio.admin_service.properties.FileUploadProperties;
 import valio.admin_service.repositories.FileMetadataRepository;
-import valio.admin_service.services.MinioService;
+import valio.admin_service.services.FileMetadataService;
 
 
 @Service
 @RequiredArgsConstructor
-public class MinioServiceImpl implements MinioService{
+public class FileMetadataServiceImpl implements FileMetadataService{
 
     private final MinioClient minioClient;
     private final FileMetadataRepository fileMetadataRepository;

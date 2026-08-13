@@ -6,7 +6,7 @@ spring:
     name: valio-admin-service
 
   profiles:
-    active: dev
+    active: default
 
   config:
     import: 

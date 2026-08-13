@@ -9,10 +9,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import valio.auth_service.dtos.requests.PermissionRequestDTO;
 import valio.auth_service.entities.Permission;
-import valio.auth_service.exceptions.DuplicatePermissionException;
-import valio.auth_service.exceptions.ResourceNotFoundException;
 import valio.auth_service.repositories.PermissionRepository;
 import valio.auth_service.services.PermissionService;
+import valio.library_plateform.exceptions.DuplicatePermissionException;
+import valio.library_plateform.exceptions.ResourceNotFoundException;
 
 @Service
 @RequiredArgsConstructor

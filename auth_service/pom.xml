@@ -133,6 +133,11 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-authorization-server</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>valio</groupId>
+			<artifactId>library-plateform</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

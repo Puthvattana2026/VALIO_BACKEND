@@ -14,7 +14,7 @@ import valio.admin_service.entities.Room;
 import valio.admin_service.mappers.RoomMapperImpl;
 import valio.admin_service.repositories.FileMetadataRepository;
 import valio.admin_service.repositories.RoomRepository;
-import valio.admin_service.services.MinioService;
+import valio.admin_service.services.FileMetadataService;
 import valio.admin_service.services.RoomService;
 
 @Service
@@ -23,9 +23,9 @@ public class RoomServiceImpl implements RoomService{
 	
 	private final RoomMapperImpl roomMapperImpl;
 	private final RoomRepository roomRepository;
-	private final MinioService minioServiceImpl;
+	private final FileMetadataService minioServiceImpl;
 	private final FileMetadataRepository fileMetadataRepository;
-	private final MinioService minioService;
+	private final FileMetadataService minioService;
 
 	
 	private Room getRoomByIdIncludeHidden(UUID id) {

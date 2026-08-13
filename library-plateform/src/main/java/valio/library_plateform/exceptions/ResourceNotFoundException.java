@@ -1,7 +1,6 @@
-package valio.auth_service.exceptions;
+package valio.library_plateform.exceptions;
 
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 
 @Data
 public class ResourceNotFoundException extends RuntimeException{

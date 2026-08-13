@@ -21,13 +21,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import valio.auth_service.dtos.requests.LoginRequestDTO;
 import valio.auth_service.entities.RefreshToken;
 import valio.auth_service.entities.Register;
-import valio.auth_service.exceptions.ResourceNotFoundException;
 import valio.auth_service.repositories.RegisterRepository;
 import valio.auth_service.strategies.Jwt.impl.AttemptsValidationStrategy;
 import valio.auth_service.strategies.Jwt.impl.ContentLengthValidationStrategy;
 import valio.auth_service.strategies.Jwt.impl.UsernamePasswordValidationStrategy;
 import valio.auth_service.utils.AccessTokenProvider;
 import valio.auth_service.utils.RefreshTokenProvider;
+import valio.library_plateform.exceptions.ResourceNotFoundException;
 
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 

@@ -1,4 +1,4 @@
-package valio.auth_service.exceptions;
+package valio.library_plateform.exceptions;
 
 public class InvalidUsernamePasswordException extends ApiException{
     public InvalidUsernamePasswordException() {

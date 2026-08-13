@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import valio.auth_service.entities.RefreshToken;
-import valio.auth_service.exceptions.InvalidRefreshTokenException;
 import valio.auth_service.repositories.RefreshTokenRepository;
 import valio.auth_service.repositories.RegisterRepository;
 import valio.auth_service.services.RefreshTokenService;
 import valio.auth_service.utils.AccessTokenProvider;
+import valio.library_plateform.exceptions.InvalidRefreshTokenException;
 
 @Service
 @RequiredArgsConstructor

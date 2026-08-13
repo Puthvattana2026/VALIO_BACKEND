@@ -12,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 import valio.auth_service.dtos.requests.RoleRequestDTO;
 import valio.auth_service.entities.Permission;
 import valio.auth_service.entities.Role;
-import valio.auth_service.exceptions.DuplicateRoleException;
-import valio.auth_service.exceptions.ResourceNotFoundException;
 import valio.auth_service.repositories.PermissionRepository;
 import valio.auth_service.repositories.RoleRepository;
 import valio.auth_service.services.RoleService;
+import valio.library_plateform.exceptions.DuplicateRoleException;
+import valio.library_plateform.exceptions.ResourceNotFoundException;
 
 @Service
 @RequiredArgsConstructor

@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 import valio.admin_service.dtos.response.FileMetadataResponse;
 import valio.admin_service.entities.FileMetadata;
 import valio.admin_service.mappers.FileMetaDataMapper;
-import valio.admin_service.services.MinioService;
+import valio.admin_service.services.FileMetadataService;
 
 @RestController
 @RequestMapping("/admin/files")
@@ -27,7 +27,7 @@ import valio.admin_service.services.MinioService;
 @PreAuthorize("hasRole('ADMIN')")
 public class FileController {
 
-	private final MinioService minioServiceImpl;
+	private final FileMetadataService minioServiceImpl;
 	private final FileMetaDataMapper dataMapper;
 
 	@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

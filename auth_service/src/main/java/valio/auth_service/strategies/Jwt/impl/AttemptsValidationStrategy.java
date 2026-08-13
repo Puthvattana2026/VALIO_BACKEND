@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import valio.auth_service.entities.Register;
-import valio.auth_service.exceptions.ResourceNotFoundException;
 import valio.auth_service.repositories.RegisterRepository;
 import valio.auth_service.strategies.Jwt.ValidationRuleStrategy;
+import valio.library_plateform.exceptions.ResourceNotFoundException;
 
 @Service
 @RequiredArgsConstructor

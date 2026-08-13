@@ -2,8 +2,8 @@ package valio.auth_service.strategies.Jwt.impl;
 import org.springframework.stereotype.Service;
 
 import valio.auth_service.dtos.requests.LoginRequestDTO;
-import valio.auth_service.exceptions.InvalidUsernamePasswordException;
 import valio.auth_service.strategies.Jwt.ValidationRuleStrategy;
+import valio.library_plateform.exceptions.InvalidUsernamePasswordException;
 
 @Service
 public class UsernamePasswordValidationStrategy implements ValidationRuleStrategy<LoginRequestDTO> {

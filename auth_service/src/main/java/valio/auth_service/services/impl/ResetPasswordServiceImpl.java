@@ -10,12 +10,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import valio.auth_service.entities.Register;
 import valio.auth_service.entities.ResetPassword;
-import valio.auth_service.exceptions.ResourceNotFoundException;
 import valio.auth_service.repositories.RegisterRepository;
 import valio.auth_service.repositories.ResetPasswordRepository;
 import valio.auth_service.services.ResetPasswordService;
 import valio.auth_service.utils.DigitsGenerator;
 import valio.auth_service.utils.DigitsSender;
+import valio.library_plateform.exceptions.ResourceNotFoundException;
 
 @Service
 @RequiredArgsConstructor

@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import valio.admin_service.entities.FileMetadata;
 
-public interface MinioService {
+public interface FileMetadataService {
 	FileMetadata uploadFile(MultipartFile file);
 	List<FileMetadata> uploadFiles(List<MultipartFile> files);
 	void deleteFile(UUID fileId);

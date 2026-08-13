@@ -6,7 +6,7 @@ spring:
     name: valio-guest-service
 
   profiles:
-    active: dev 
+    active: default 
 
   config:
     import:

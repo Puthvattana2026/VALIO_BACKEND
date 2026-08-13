@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import valio.auth_service.entities.RefreshToken;
-import valio.auth_service.exceptions.InvalidRefreshTokenException;
-import valio.auth_service.exceptions.ResourceNotFoundException;
 import valio.auth_service.repositories.RefreshTokenRepository;
 import valio.auth_service.services.LogoutService;
+import valio.library_plateform.exceptions.InvalidRefreshTokenException;
+import valio.library_plateform.exceptions.ResourceNotFoundException;
 
 @Service
 @RequiredArgsConstructor
