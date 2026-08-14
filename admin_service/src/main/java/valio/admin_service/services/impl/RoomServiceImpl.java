@@ -16,6 +16,7 @@ import valio.admin_service.repositories.FileMetadataRepository;
 import valio.admin_service.repositories.RoomRepository;
 import valio.admin_service.services.FileMetadataService;
 import valio.admin_service.services.RoomService;
+import valio.library_plateform.exceptions.ResourceNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class RoomServiceImpl implements RoomService{
 
 	
 	private Room getRoomByIdIncludeHidden(UUID id) {
-		return roomRepository.findByIdIncludingHidden(id).orElseThrow(RuntimeException::new);
+		return roomRepository.findByIdIncludingHidden(id).orElseThrow(ResourceNotFoundException::new);
 	}
 	
 	/* 
@@ -48,7 +49,7 @@ public class RoomServiceImpl implements RoomService{
 	
 	@Override
 	public Room getRoomByIdVisible(UUID roomId) {
-		return roomRepository.findVisibleWithImageById(roomId).orElseThrow(RuntimeException::new);
+		return roomRepository.findVisibleWithImageById(roomId).orElseThrow(ResourceNotFoundException::new);
 	}
 	
 	
@@ -70,13 +71,9 @@ public class RoomServiceImpl implements RoomService{
 	public Room updateRoom(UUID roomId, Room room, MultipartFile image) {
 		Room existedRoom = getRoomByIdIncludeHidden(roomId);
 		existedRoom.setRoomNumber(room.getRoomNumber());
-		existedRoom.setFloor(room.getFloor());
-		existedRoom.setCapacity(room.getCapacity());
-		existedRoom.setSize(room.getSize());
 		existedRoom.setPrice(room.getPrice());
 		existedRoom.setRoomStatus(room.getRoomStatus());
 		existedRoom.setRoomType(room.getRoomType());
-		existedRoom.setBedType(room.getBedType());
 		
 	    if (image != null && !image.isEmpty()) {
 	    	 FileMetadata oldImage = existedRoom.getImage();
@@ -100,7 +97,7 @@ public class RoomServiceImpl implements RoomService{
 	@Transactional
 	@Override
 	public void deleteRoom(UUID id) {
-		Room room = roomRepository.findByIdIncludingHidden(id).orElseThrow(RuntimeException::new);
+		Room room = roomRepository.findByIdIncludingHidden(id).orElseThrow(ResourceNotFoundException::new);
         if (room.getImage() != null && room.getImage().getId() != null) {
             minioService.deleteFile(room.getImage().getId());
         }

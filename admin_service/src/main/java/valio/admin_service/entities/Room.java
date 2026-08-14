@@ -16,7 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
-import valio.admin_service.enums.RoomBedType;
 import valio.admin_service.enums.RoomStatus;
 import valio.admin_service.enums.RoomType;
 
@@ -31,24 +30,19 @@ public class Room {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 	
-	private long roomNumber;
-	private int floor;
-	private int capacity;
-	private int size;
-	private BigDecimal price;
-	
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
-    private FileMetadata image;
+	private int roomNumber;
 	
 	@Enumerated(EnumType.STRING)
 	private RoomStatus roomStatus;
 	
 	@Enumerated(EnumType.STRING)
 	private RoomType roomType;
+
+	private BigDecimal price;
 	
-	@Enumerated(EnumType.STRING)
-	private RoomBedType bedType;
-	
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private FileMetadata image;
+
 	private Boolean visible = true;
 }
