@@ -11,5 +11,4 @@ spring:
   config:
     import:
     - configserver:http://localhost:8083
-    - optional:classpath:env.yaml
 
