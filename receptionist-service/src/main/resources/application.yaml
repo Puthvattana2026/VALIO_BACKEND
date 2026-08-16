@@ -1,0 +1,14 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: valio-receptionist-service
+
+  profiles:
+    active: default 
+
+  config:
+    import:
+    - configserver:http://localhost:8083
+    - classpath:env.yaml
