@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: valio-apigateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true 
 
   profiles:
     active: default
