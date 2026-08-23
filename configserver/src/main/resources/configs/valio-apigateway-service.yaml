@@ -17,3 +17,5 @@ management:
   endpoint:
     shutdown:
       enabled: true
+    gateway:
+      enabled: true
