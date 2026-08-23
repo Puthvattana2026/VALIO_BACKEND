@@ -29,6 +29,7 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<image.tag>latest</image.tag>
 		<spring-cloud.version>2025.1.2</spring-cloud.version>
 	</properties>
 	<dependencies>
@@ -146,11 +147,14 @@
 				<version>3.5.1</version>
 
 				<configuration>
-					<to>
-						<image>
-							vattanaputh/${project.artifactId}:v1
-						</image>
-					</to>
+				    <to>
+				      <image>
+				        vattanaputh/${project.artifactId}:${image.tag}
+				      </image>
+				      <tags>
+				        <tag>latest</tag>  
+				      </tags>
+				    </to>
 
 					<container>
 						<ports>
