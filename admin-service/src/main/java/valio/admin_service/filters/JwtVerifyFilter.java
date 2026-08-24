@@ -61,8 +61,7 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toSet());
 
-            Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(username, accessToken, grantedAuthorities);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(username, accessToken, grantedAuthorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JwtException | IllegalArgumentException ex) {
             SecurityContextHolder.clearContext();
