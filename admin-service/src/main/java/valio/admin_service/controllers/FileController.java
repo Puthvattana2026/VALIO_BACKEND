@@ -22,7 +22,7 @@ import valio.admin_service.mappers.FileMetaDataMapper;
 import valio.admin_service.services.FileMetadataService;
 
 @RestController
-@RequestMapping("/admin/files")
+@RequestMapping("/files")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
 public class FileController {

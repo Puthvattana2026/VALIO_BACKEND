@@ -22,7 +22,7 @@ import valio.admin_service.dtos.response.RoleResponseDTO;
 import valio.admin_service.feign.RolePermissionFeignClient;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/assign")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminRolePermissionController {

@@ -42,7 +42,7 @@ public class ServiceWebConfig {
                                 """
                                 {
                                     "status": "UNAUTHORIZED",
-                                    "message": "Please sign in to continue."
+                                    "message": "Admin Service"
                                 }
                                 """);
                         })

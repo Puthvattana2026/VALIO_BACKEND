@@ -26,7 +26,7 @@ import valio.admin_service.mappers.RoomMapper;
 import valio.admin_service.services.RoomService;
 
 @RestController
-@RequestMapping("/admin/rooms")
+@RequestMapping("/rooms")
 @RequiredArgsConstructor
 public class RoomController {
 	

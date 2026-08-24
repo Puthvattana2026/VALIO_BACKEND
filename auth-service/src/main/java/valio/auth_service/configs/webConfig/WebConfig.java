@@ -93,7 +93,7 @@ public class WebConfig {
                     	"""
 	                        {
 	                            "status": "UNAUTHORIZED",
-	                            "message": "Please sign in to continue."
+	                            "message": "Auth Service"
 	                        }
                         """);
                 }))
