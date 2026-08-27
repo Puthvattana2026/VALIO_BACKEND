@@ -6,9 +6,9 @@ spring:
     name: valio-receptionist-service
 
   profiles:
-    active: default 
+    active: dev 
 
   config:
     import:
     - configserver:http://localhost:8083
-    - classpath:env.yaml
+    - classpath:env-dev.yaml

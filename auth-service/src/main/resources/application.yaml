@@ -6,9 +6,9 @@ spring:
     name: valio-auth-service
 
   profiles:
-    active: default
+    active: dev
 
   config:
     import:
       - configserver:http://localhost:8083
-      - optional:classpath:env.yaml
+      - optional:classpath:env-dev.yaml
