@@ -11,11 +11,12 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      POSTGRES_USERNAME: ${DATASOURCE_USERNAME}
+      POSTGRES_USER: ${DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
       POSTGRES_DB: auth_service
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ../database/00-init-database.sh:/docker-entrypoint-initdb.d/00-init-database.sh:ro
     networks:
       - valionetwork
 
@@ -27,7 +28,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ACESSKEY}
+      MINIO_ROOT_USER: ${MINIO_ACCESSKEY}
       MINIO_ROOT_PASSWORD: ${MINIO_SECRETKEY}
     volumes:
       - minio-data:/data
@@ -115,6 +116,10 @@ services:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
 
   admin:
     image: vattanaputh/admin_service:latest
@@ -143,6 +148,13 @@ services:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
+      MINIO_URL: ${MINIO_URL}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESSKEY} 
+      MINIO_SECRET_KEY: ${MINIO_SECRETKEY}
 
   guest:
     image: vattanaputh/guest_service:latest
@@ -169,6 +181,10 @@ services:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
 
   housekeeper:
     image: vattanaputh/housekeeper_service:latest
@@ -195,6 +211,10 @@ services:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
 
   receptionist:
     image: vattanaputh/receptionist_service:latest
@@ -221,6 +241,10 @@ services:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
 
   api-gateway:
     image: vattanaputh/apigateway-service:latest
