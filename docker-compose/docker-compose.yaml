@@ -1,5 +1,60 @@
 version: "3.8"
 services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vattanaputh -d auth_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USERNAME: ${DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
+      POSTGRES_DB: auth_service
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - valionetwork
+
+  minio:
+    image: minio/minio:RELEASE.2025-07-18T21-56-31Z
+    container_name: minio-server
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACESSKEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRETKEY}
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: on-failure:10
+    networks:
+      - valionetwork
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: on-failure:10
+    networks:
+      - valionetwork
+
   configserver:
     image: vattanaputh/configserver:latest
     ports: 
@@ -9,8 +64,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+    restart: on-failure:10
+    environment:                                  
+      SPRING_RABBITMQ_HOST: rabbitmq             
     networks:
       - valionetwork
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   eurekaserver:
     image: vattanaputh/eurekaserver:latest
@@ -26,20 +87,20 @@ services:
     depends_on:
       configserver:
         condition: service_healthy
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+    restart: on-failure:10
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
 
-  authservice:
+  auth:
     image: vattanaputh/auth_service:latest
     ports: 
       - "8085:8085"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://auth:8085/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - valionetwork
     depends_on:
@@ -47,21 +108,23 @@ services:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+      postgres:                                 
+        condition: service_healthy
+    restart: on-failure:10
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
 
-  adminservice:
+  admin:
     image: vattanaputh/admin_service:latest
     ports: 
       - "8086:8086"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://admin:8086/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - valionetwork
     depends_on:
@@ -69,38 +132,39 @@ services:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
-      authservice:
+      auth:
         condition: service_healthy
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+      minio:
+        condition: service_healthy
+      postgres:                                 
+        condition: service_healthy
+    restart: on-failure:10
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
 
-  receptionist:
-    image: vattanaputh/receptionist_service:latest
+  guest:
+    image: vattanaputh/guest_service:latest
     ports:
-      - "8089:8089"
+      - "8087:8087"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://guest:8087/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - valionetwork
     depends_on:
       configserver:
         condition: service_healthy
       eurekaserver:
-       condition: service_healthy
-      authservice:
-       condition: service_healthy
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+      postgres:                                 
+        condition: service_healthy
+    restart: on-failure:10
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
@@ -110,19 +174,81 @@ services:
     image: vattanaputh/housekeeper_service:latest
     ports:
       - "8088:8088"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://housekeeper:8088/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - valionetwork
     depends_on:
       configserver:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
-      authservice:
+      auth:
         condition: service_healthy
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+      postgres:                                 
+        condition: service_healthy
+    restart: on-failure:10
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+
+  receptionist:
+    image: vattanaputh/receptionist_service:latest
+    ports:
+      - "8089:8089"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://receptionist:8089/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - valionetwork
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+      postgres:                                 
+        condition: service_healthy
+    restart: on-failure:10
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+
+  api-gateway:
+    image: vattanaputh/apigateway-service:latest
+    ports:
+    - "8095:8095"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://api-gateway:8095/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - valionetwork
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+      admin:
+        condition: service_healthy
+      guest:
+        condition: service_healthy
+      housekeeper:
+        condition: service_healthy
+      receptionist:
+        condition: service_healthy
+    restart: on-failure:10
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
@@ -130,4 +256,7 @@ services:
 
 networks:
   valionetwork:
-    
+
+volumes:
+  minio-data:
+  postgres-data:

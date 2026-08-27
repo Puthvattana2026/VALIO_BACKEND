@@ -1,0 +1,21 @@
+eureka:
+   instance:
+     preferIpAddress: true
+       
+   client:
+     registerWithEureka: true
+     fetchRegistry: true
+     serviceUrl:
+        defaultZone: http://eurekaserver:8084/eureka/
+        
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+  endpoint:
+    shutdown:
+      enabled: true
+    gateway:
+      enabled: true
