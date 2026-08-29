@@ -8,8 +8,9 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U vattanaputh -d auth_service"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 5
+      start_period: 20s
     environment:
       POSTGRES_USER: ${DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
@@ -35,8 +36,9 @@ services:
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     restart: on-failure:10
     networks:
       - valionetwork
@@ -50,8 +52,9 @@ services:
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     restart: on-failure:10
     networks:
       - valionetwork
@@ -61,10 +64,11 @@ services:
     ports: 
       - "8083:8083"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://configserver:8083/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     restart: on-failure:10
     environment:                                  
       SPRING_RABBITMQ_HOST: rabbitmq             
@@ -79,10 +83,11 @@ services:
     ports: 
       - "8084:8084"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://eurekaserver:8084/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     networks:
       - valionetwork
     depends_on:
@@ -98,10 +103,11 @@ services:
     ports: 
       - "8085:8085"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://auth:8085/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8085/actuator/health"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     networks:
       - valionetwork
     depends_on:
@@ -126,10 +132,11 @@ services:
     ports: 
       - "8086:8086"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://admin:8086/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8086/actuator/health"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     networks:
       - valionetwork
     depends_on:
@@ -161,10 +168,11 @@ services:
     ports:
       - "8087:8087"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://guest:8087/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8087/actuator/health"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     networks:
       - valionetwork
     depends_on:
@@ -186,15 +194,47 @@ services:
       DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
       DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
 
+    booking:
+      image: vattanaputh/booking_service:latest
+      ports:
+        - "8087:8087"
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:8087/actuator/health"]
+        interval: 10s
+        timeout: 10s
+        retries: 10
+        start_period: 20s
+      networks:
+        - valionetwork
+      depends_on:
+        configserver:
+          condition: service_healthy
+        eurekaserver:
+          condition: service_healthy
+        auth:
+          condition: service_healthy
+        postgres:                                 
+          condition: service_healthy
+      restart: on-failure:10
+      environment:
+        SPRING_PROFILES_ACTIVE: dev
+        SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
+        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+        DATASOURCE_URL: ${DATASOURCE_URL}
+        DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+        DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+        DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
+
   housekeeper:
     image: vattanaputh/housekeeper_service:latest
     ports:
       - "8088:8088"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://housekeeper:8088/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8088/actuator/health"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     networks:
       - valionetwork
     depends_on:
@@ -221,10 +261,11 @@ services:
     ports:
       - "8089:8089"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://receptionist:8089/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8089/actuator/health"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     networks:
       - valionetwork
     depends_on:
@@ -251,10 +292,11 @@ services:
     ports:
     - "8095:8095"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://api-gateway:8095/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8095/actuator/health"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 10
+      start_period: 20s
     networks:
       - valionetwork
     depends_on:

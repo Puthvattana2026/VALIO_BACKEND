@@ -18,7 +18,7 @@ public interface RoomRepository extends JpaRepository<Room, UUID>{
     Optional<Room> findByIdIncludingHidden(@Param("id") UUID id);
     
 	@Modifying(clearAutomatically = true)
-	@Query(value = "UPDATE rooms SET visible = :visible WHERE id = :id", nativeQuery = true)
+	@Query("UPDATE rooms SET visible = :visible WHERE id = :id")
 	void updateVisibility(@Param("id") UUID roomId, @Param("visible") Boolean visible);
 	
     @Query("SELECT r FROM Room r LEFT JOIN FETCH r.image WHERE r.visible = true")
