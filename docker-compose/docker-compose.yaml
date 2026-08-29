@@ -194,36 +194,38 @@ services:
       DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
       DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
 
-    booking:
-      image: vattanaputh/booking_service:latest
-      ports:
-        - "8087:8087"
-      healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:8087/actuator/health"]
-        interval: 10s
-        timeout: 10s
-        retries: 10
-        start_period: 20s
-      networks:
-        - valionetwork
-      depends_on:
-        configserver:
-          condition: service_healthy
-        eurekaserver:
-          condition: service_healthy
-        auth:
-          condition: service_healthy
-        postgres:                                 
-          condition: service_healthy
-      restart: on-failure:10
-      environment:
-        SPRING_PROFILES_ACTIVE: dev
-        SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
-        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
-        DATASOURCE_URL: ${DATASOURCE_URL}
-        DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
-        DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
-        DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
+  booking:
+    image: vattanaputh/booking_service:latest
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/actuator/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+    networks:
+      - valionetwork
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+      guest:
+        condition: service_healthy
+      postgres:                                 
+        condition: service_healthy
+    restart: on-failure:10
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8083
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8084/eureka/
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      DATASOURCE_DRIVER_CLASS_NAME: ${DATASOURCE_DRIVER_CLASS_NAME}
 
   housekeeper:
     image: vattanaputh/housekeeper_service:latest
